@@ -12,29 +12,35 @@ struct Graph{
     int nodecount;
 } g;
 
-void createnode(int n){
+void createnode(int n){ // n:2
     int i=0;
-    for(i=0; i<g.nodecount; i++){
-        if(g.nodes[i]->nodeid == n) return;
+    // g.nodecount = 1
+    for(i=0; i<g.nodecount; i++){ // 1 < 1; False; i=1;
+        if(g.nodes[i]->nodeid == n) {
+            return;
+        }
     }
 
     struct Node *newnode = (struct Node *)malloc(sizeof(struct Node));
-    newnode->nodeid = n;
-    newnode->ncount = 0;
-    g.nodes[i] = newnode;
-    g.nodecount++;
+    g.nodes[i] = newnode; // g.nodes[1] = newnode;
+    newnode->nodeid = n; // newnode->nodeid = 2
+    newnode->ncount = 0; // newnode->ncount = 0
+    g.nodecount++; // g.nodecount = 2
 }
 
 struct Node *getnode(int n){
-    for(int i=0; i<g.nodecount; i++){
-        if(g.nodes[i]->nodeid == n) return g.nodes[i];
+
+    for(int i=0; i < g.nodecount; i++){ // g.nodecount = 2
+        if(g.nodes[i]->nodeid == n) {
+            return g.nodes[i];
+        }
     }
 
     return NULL;
 }
 
-void addneighbour(int nodeid, int nei){
-    struct Node *p = getnode(nodeid);
+void addneighbour(int nodeid, int nei){ // nodeid:1, nei:2
+    struct Node *p = getnode(nodeid); // getnode(1)
     int i=0;
 
     for(i=0; i<p->ncount; i++){
@@ -66,14 +72,14 @@ void printpath(int *path, int pncount){
 }
 
 int isinpath(int *path, int pncount, int n){
-    for(int i=0; i<pncount; i++){
-        if(path[i] == n) return 1;
+    for(int i=0; i<pncount; i++){ // path = [1] // pncount = 1
+        if(path[i] == n) return 1; // path[0] = 1, 1==2 -> False
     }
     return 0;
 }
 
 void findpath(int s, int d, int *path, int pncount){
-    if(s == d){
+    if(s == d){ // s=1, d=5
         path[pncount] = s;
         pncount = pncount + 1;
         printpath(path, pncount);
@@ -87,15 +93,15 @@ void findpath(int s, int d, int *path, int pncount){
             pncount = pncount + 1;
 
             struct Node *p = getnode(s);
-            for(int i=0; i<p->ncount; i++){
-                int nei = p->ns[i];
-                findpath(nei, d, path, pncount);
+            for(int i=0; i<p->ncount; i++){ //p->ncount = 2
+                int nei = p->ns[i]; // nei = 2
+                findpath(nei, d, path, pncount); // findpath(2, 5, [1], 1)
             }
         }
     }
 }
 
-void main(void){
+int main(){
     g.nodecount = 0;
     int edgecount, n1, n2;
     int path[100];
@@ -110,6 +116,7 @@ void main(void){
         addneighbour(n2, n1);
     }
 
-    printgraph();
-    findpath(1, 10, path, 0);
+    // printgraph();
+    findpath(1, 5, path, 0);
+    return 0;
 }
